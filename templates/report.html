@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decision Tree Model Report</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th,
+        td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .center {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Decision Tree Model Report</h1>
+
+    <h2>Basic Model Information:</h2>
+    <ul>
+        <li>Số lượng đặc trưng (Number of Features): {{ basic_info.num_features }}</li>
+        <li>Số lớp (Number of Classes): {{ basic_info.num_classes }}</li>
+        <li>Độ sâu tối đa của cây (Max Depth of the Tree): {{ basic_info.max_depth }}</li>
+        <li>Số lượng mẫu tối thiểu để phân chia(Min Samples to Split): {{ basic_info.min_samples_split }}</li>
+        <li>Số lượng spam: {{ basic_info.num_spam }}</li>
+        <li>Số lượng non-spam: {{ basic_info.num_non_spam }}</li>
+        <li>Số lượng spam (test): {{ basic_info.num_spam_test }}</li>
+        <li>Số lượng non-spam (test): {{ basic_info.num_non_spam_test }}</li>
+    </ul>
+
+    <h2>Classification Report:</h2>
+    <table>
+        <tr>
+            <th></th>
+            <th>Precision</th>
+            <th>Recall</th>
+            <th>F1-Score</th>
+            <th>Support</th>
+        </tr>
+        <tr>
+            <td>0</td>
+            <td>{{ classification_rep['0']['precision'] | round(2) }}</td>
+            <td>{{ classification_rep['0']['recall'] | round(2) }}</td>
+            <td>{{ classification_rep['0']['f1-score'] | round(2) }}</td>
+            <td>{{ classification_rep['0']['support'] }}</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>{{ classification_rep['1']['precision'] | round(2) }}</td>
+            <td>{{ classification_rep['1']['recall'] | round(2) }}</td>
+            <td>{{ classification_rep['1']['f1-score'] | round(2) }}</td>
+            <td>{{ classification_rep['1']['support'] }}</td>
+        </tr>
+        <tr>
+            <td colspan="3"><strong>Accuracy</strong></td>
+            <td>{{ classification_rep['accuracy']| round(2) }}</td>
+
+        </tr>
+        <tr>
+            <td><strong>Avg</strong></td>
+            <td>{{ classification_rep['macro avg']['precision'] | round(2) }}</td>
+            <td>{{ classification_rep['macro avg']['recall'] | round(2) }}</td>
+            <td>{{ classification_rep['macro avg']['f1-score'] | round(2) }}</td>
+            <td>{{ classification_rep['macro avg']['support'] }}</td>
+        </tr>
+        <tr>
+            <td><strong>Weighted Avg</strong></td>
+            <td>{{ classification_rep['weighted avg']['precision'] | round(2) }}</td>
+            <td>{{ classification_rep['weighted avg']['recall'] | round(2) }}</td>
+            <td>{{ classification_rep['weighted avg']['f1-score'] | round(2) }}</td>
+            <td>{{ classification_rep['weighted avg']['support'] }}</td>
+        </tr>
+    </table>
+
+    <h2>Decision Tree Visualization:</h2>
+    <img src="{{ url_for('static', filename='C45_tree.png') }}" alt="Decision Tree">
+
+</body>
+
+</html>

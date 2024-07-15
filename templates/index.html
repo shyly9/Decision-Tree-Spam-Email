@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Email Classification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+            height: 100%;
+        }
+
+        #container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 1px solid #ccc;
+            /* Đường kẻ giữa trang web */
+            width: 100%;
+            margin: auto;
+        }
+
+        #input-section,
+        #upload-section {
+            width: 100%;
+            box-sizing: border-box;
+            margin: 20px;
+        }
+
+        #upload-section {
+            border-top: 1px solid #ccc;
+            padding-top: 20px;
+            margin-bottom: 30px;
+        }
+
+        #input-section,
+        #upload-section {
+            height: 50%;
+        }
+
+        input[type="text"] {
+            height: 100px;
+            width: 90%;
+            margin: 10px auto;
+        }
+
+        table {
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Email Classification</h1>
+    <div id="container">
+        <!-- Phần nhập email -->
+        <div id="input-section">
+            <form method="POST" action="/text">
+                <label for="email">Nhập Email:</label><br />
+                <textarea name="email" rows="9" cols="100" required>
+{{ request.form['email'] if request.form['email'] else '' }}</textarea><br /><br />
+                <button type="submit">Phân loại</button>
+            </form>
+            {% if result is defined %}
+            <h3>{{ result }}</h3>
+            {% endif %}
+        </div>
+
+        <!-- Phần tải email -->
+        <div id="upload-section">
+            <form method="POST" action="/file" enctype="multipart/form-data">
+                <label for="file">Tải lên Email:</label><br />
+                <input type="file" name="files[]" accept=".txt" multiple required /><br />
+                <button type="submit">Phân loại</button>
+            </form>
+            {% if uploads %}
+            <h2>Kết quả phân loại</h2>
+            <table border="1">
+                <tr>
+                    <th>Tên email</th>
+                    <th>Nội dung (Preview)</th>
+                    <th>Phân loại</th>
+                </tr>
+                {% for upload in uploads %}
+                <tr>
+                    <td>{{ upload.filename }}</td>
+                    <td>
+                        {{ upload.file_content[:100] }}{% if upload.file_content|length >
+                        100 %}...{% endif %}
+                    </td>
+                    <td>{{ upload.result }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% endif %}
+        </div>
+    </div>
+</body>
+
+</html>
